@@ -1,10 +1,14 @@
 package com.multimodule.webshop.model;
 
-import jakarta.persistence.*;
+import com.multimodule.webshop.role.Roles;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "consumers")
@@ -21,5 +25,6 @@ public class Consumer extends AbstractUserModel {
         super.setAccountNonLocked(true);
         super.setCredentialsNonExpired(true);
         super.setEnabled(true);
+        super.setAuthorities(Set.of(Roles.ROLE_USER));
     }
 }

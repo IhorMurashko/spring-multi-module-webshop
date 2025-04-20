@@ -38,6 +38,10 @@
         <mapstruct.version>1.6.3</mapstruct.version>
         <lombok.version>1.18.38</lombok.version>
         <h2.version>2.3.232</h2.version>
+        <jjwt-api.version>0.12.6</jjwt-api.version>
+        <jjwt-impl.version>0.12.6</jjwt-impl.version>
+        <jjwt-jackson.version>0.12.6</jjwt-jackson.version>
+        <spring-boot-docker-compose.version>3.4.4</spring-boot-docker-compose.version>
         <spring-boot-starter-actuator.version>3.4.4</spring-boot-starter-actuator.version>
         <spring-boot-starter-data-jpa.version>3.4.4</spring-boot-starter-data-jpa.version>
         <spring-boot-starter-data-redis.version>3.4.4</spring-boot-starter-data-redis.version>
@@ -101,6 +105,33 @@
                 <artifactId>spring-boot-starter-security</artifactId>
                 <version>${spring-boot-starter-security.version}</version>
             </dependency>
+
+            <!-- JWT зависимости (версия 0.12.6) -->
+            <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jjwt-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jjwt-impl.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${jjwt-jackson.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+
+
+
+
+
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-test</artifactId>
@@ -157,6 +188,22 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-docker-compose -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-docker-compose</artifactId>
+                <version>${spring-boot-docker-compose.version}</version>
+            </dependency>
+
+
+
+
+
+
+
+
+
         </dependencies>
     </dependencyManagement>
 
