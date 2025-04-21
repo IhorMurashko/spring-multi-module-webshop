@@ -1,0 +1,24 @@
+syntax = "proto3";
+package tokens;
+option java_package = "com.multimodule.webshop.proto.common";
+option java_multiple_files = true;
+
+message TokensResponse{
+  string refreshToken = 1;
+  string access = 2;
+}
+
+message TokenRequest{
+  string refreshToken = 1;
+  string access = 2;
+}
+message IsValidTokenResponse{
+  bool isValid=1;
+}
+message RefreshToken{
+  string refreshToken=1;
+}
+message AccessToken{
+  string accessToken=1;
+}
+

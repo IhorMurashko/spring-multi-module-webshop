@@ -42,7 +42,7 @@ public abstract class AbstractUserModel {
     @CollectionTable(name = "user_roles",
     joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
-    protected Set<Roles> authorities;
+    protected Set<Roles> roles;
     @Column(nullable = false)
     protected boolean isAccountNonExpired;
     @Column(nullable = false)

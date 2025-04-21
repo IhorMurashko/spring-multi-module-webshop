@@ -1,14 +1,13 @@
-package com.multimodule.webshop.dto;
+package com.multimodule.webshop.dtos;
 
 import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
 import java.util.Set;
 
-
-public record ConsumerDto(
+public record UserDto(
         String username,
-        Set<GrantedAuthority> roles,
+        Set<GrantedAuthority> authorities,
         boolean isAccountNonExpired,
         boolean isAccountNonLocked,
         boolean isCredentialsNonExpired,

@@ -25,8 +25,9 @@
     </developers>
 
     <modules>
-
         <module>user-service</module>
+        <module>grpc-common</module>
+        <module>auth-service</module>
     </modules>
 
     <properties>
@@ -35,6 +36,8 @@
         <protobuf-java.version>3.25.6</protobuf-java.version>
         <spring-cloud.version>2024.0.1</spring-cloud.version>
         <spring-grpc.version>0.7.0</spring-grpc.version>
+        <spring-grpc-test.version>0.7.0</spring-grpc-test.version>
+        <grpc-common.version>0.0.1-SNAPSHOT</grpc-common.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <lombok.version>1.18.38</lombok.version>
         <h2.version>2.3.232</h2.version>
@@ -50,15 +53,12 @@
         <spring-boot-starter-web.version>3.4.4</spring-boot-starter-web.version>
         <spring-boot-starter-test.version>3.4.4</spring-boot-starter-test.version>
         <spring-boot-starter-security.version>3.4.4</spring-boot-starter-security.version>
+        <spring-security-core.version>6.4.4</spring-security-core.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-actuator</artifactId>
-                <version>${spring-boot-starter-actuator.version}</version>
-            </dependency>
+            <!--                    DATABASE                    -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -69,29 +69,6 @@
                 <artifactId>spring-boot-starter-data-redis</artifactId>
                 <version>${spring-boot-starter-data-redis.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-mail</artifactId>
-                <version>${spring-boot-starter-mail.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-validation</artifactId>
-                <version>${spring-boot-starter-validation.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-web</artifactId>
-                <version>${spring-boot-starter-web.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.grpc</groupId>
-                <artifactId>grpc-services</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-core</artifactId>
-            </dependency>
 
             <dependency>
                 <groupId>com.h2database</groupId>
@@ -99,6 +76,56 @@
                 <version>${h2.version}</version>
                 <scope>runtime</scope>
             </dependency>
+
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <!--                    MAIL                    -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-mail</artifactId>
+                <version>${spring-boot-starter-mail.version}</version>
+            </dependency>
+
+            <!--                    VALIDATION                    -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-validation</artifactId>
+                <version>${spring-boot-starter-validation.version}</version>
+            </dependency>
+            <!--                    WEB                    -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring-boot-starter-web.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-actuator</artifactId>
+                <version>${spring-boot-starter-actuator.version}</version>
+            </dependency>
+
+            <!--                    DB MIGRATION                    -->
+
+
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+            </dependency>
+
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-database-postgresql</artifactId>
+            </dependency>
+
+            <!--                    SECURITY                    -->
+
+
             <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -106,7 +133,15 @@
                 <version>${spring-boot-starter-security.version}</version>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${spring-security-core.version}</version>
+            </dependency>
+
             <!-- JWT зависимости (версия 0.12.6) -->
+
             <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
@@ -126,10 +161,7 @@
                 <scope>runtime</scope>
             </dependency>
 
-
-
-
-
+            <!--                    TEST                    -->
 
 
             <dependency>
@@ -138,29 +170,46 @@
                 <version>${spring-boot-starter-test.version}</version>
                 <scope>test</scope>
             </dependency>
+
             <dependency>
                 <groupId>org.springframework.grpc</groupId>
                 <artifactId>spring-grpc-test</artifactId>
+                <version>${spring-grpc-test.version}</version>
                 <scope>test</scope>
             </dependency>
+
+            <!--                    GRPC                    -->
+
+
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-services</artifactId>
+                <version>${grpc.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.springframework.grpc/spring-grpc-spring-boot-starter -->
+            <dependency>
+                <groupId>org.springframework.grpc</groupId>
+                <artifactId>spring-grpc-spring-boot-starter</artifactId>
+                <version>${spring-grpc.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.multimoduls.webshop</groupId>
+                <artifactId>grpc-common</artifactId>
+                <version>${grpc-common.version}</version>
+            </dependency>
+
+            <!--                    GATEWAY                    -->
+
+
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-gateway-mvc</artifactId>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.grpc</groupId>
-                <artifactId>spring-grpc-server-web-spring-boot-starter</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>${postgresql.version}</version>
-                <scope>runtime</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-database-postgresql</artifactId>
-            </dependency>
+
+
+            <!--                    UTILS                    -->
 
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -174,6 +223,8 @@
                 <artifactId>mapstruct</artifactId>
                 <version>${mapstruct.version}</version>
             </dependency>
+
+
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -181,6 +232,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
             <dependency>
                 <groupId>org.springframework.grpc</groupId>
                 <artifactId>spring-grpc-dependencies</artifactId>
@@ -188,6 +240,9 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <!--                    DOCKER                    -->
+
 
             <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-docker-compose -->
             <dependency>
@@ -197,30 +252,23 @@
             </dependency>
 
 
-
-
-
-
-
-
-
         </dependencies>
     </dependencyManagement>
 
     <build>
         <plugins>
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-compiler-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <annotationProcessorPaths>-->
-<!--                        <path>-->
-<!--                            <groupId>org.projectlombok</groupId>-->
-<!--                            <artifactId>lombok</artifactId>-->
-<!--                        </path>-->
-<!--                    </annotationProcessorPaths>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-compiler-plugin</artifactId>-->
+            <!--                <configuration>-->
+            <!--                    <annotationProcessorPaths>-->
+            <!--                        <path>-->
+            <!--                            <groupId>org.projectlombok</groupId>-->
+            <!--                            <artifactId>lombok</artifactId>-->
+            <!--                        </path>-->
+            <!--                    </annotationProcessorPaths>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

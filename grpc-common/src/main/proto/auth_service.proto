@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package auth;
+
+option java_multiple_files = true;
+
+import "auth_credentials.proto";
+import "tokens.proto";
+import "user.proto";
+
+service AuthService{
+  rpc registration(auth.AuthCredentials) returns (Result);
+  rpc authentication (auth.AuthCredentials) returns (user.User);
+}
+
+message Result{
+  bool result = 1;
+}

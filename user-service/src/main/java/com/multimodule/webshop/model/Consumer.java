@@ -25,6 +25,6 @@ public class Consumer extends AbstractUserModel {
         super.setAccountNonLocked(true);
         super.setCredentialsNonExpired(true);
         super.setEnabled(true);
-        super.setAuthorities(Set.of(Roles.ROLE_USER));
+        super.setRoles(Set.of(Roles.ROLE_USER));
     }
 }

@@ -12,3 +12,6 @@ spring:
     compose:
       enabled: true
       lifecycle-management: start_and_stop
+  grpc:
+    server:
+      port: 9091

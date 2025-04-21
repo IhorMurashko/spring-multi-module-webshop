@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package tokens;
+
+option java_multiple_files = true;
+import "tokens.proto";
+
+service TokensValidService{
+  rpc ValidateToken (TokenRequest) returns(IsValidTokenResponse);
+  rpc updateRefreshToken(RefreshToken) returns (RefreshToken);
+  rpc updateAccessToken(RefreshToken)returns (TokensResponse);
+}
+

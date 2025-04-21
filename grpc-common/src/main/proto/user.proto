@@ -1,0 +1,14 @@
+syntax = "proto3";
+package user;
+option java_package = "com.multimodule.webshop.proto.common";
+option java_multiple_files = true;
+
+message User{
+  string username = 1;
+  repeated string roles = 2;
+  bool isAccountNonExpired = 3;
+  bool isAccountNonLocked = 4;
+  bool isCredentialsNonExpired = 5;
+  bool isEnabled = 6;
+}
+

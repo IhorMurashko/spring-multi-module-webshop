@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package user_details;
+
+option java_multiple_files = true;
+import "user.proto";
+
+service UserDetailsService{
+  rpc loadUserByUsername(Username) returns(user.User);
+}
+
+
+message Username {
+  string username = 1;
+}
+

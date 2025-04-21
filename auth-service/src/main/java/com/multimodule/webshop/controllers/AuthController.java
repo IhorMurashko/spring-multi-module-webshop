@@ -1,0 +1,39 @@
+package com.multimodule.webshop.controllers;
+
+import com.multimodule.webshop.dtos.AuthCredentialsDto;
+import com.multimodule.webshop.dtos.TokensDto;
+import com.multimodule.webshop.grpcAuthServices.GrpcAuthService;
+import com.multimodule.webshop.proto.common.AuthCredentials;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/v1/auth")
+@RequiredArgsConstructor
+public class AuthController {
+
+    private final GrpcAuthService grpcAuthService;
+
+    @PostMapping("/registration")
+    public ResponseEntity<HttpStatus> registration(
+            @RequestBody AuthCredentialsDto authCredentials) {
+
+        grpcAuthService.registration(authCredentials);
+
+        return ResponseEntity.ok(HttpStatus.CREATED);
+    }
+
+    @PostMapping("/auth")
+    public ResponseEntity<TokensDto> auth(@RequestBody AuthCredentialsDto authCredentials) {
+        TokensDto tokensDto = grpcAuthService.authenticate(authCredentials);
+
+        return ResponseEntity.ok(tokensDto);
+    }
+
+
+}
