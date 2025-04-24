@@ -1,0 +1,9 @@
+server:
+  port: 8761
+
+eureka:
+  client:
+    register-with-eureka: false # сам сервер не регистрирует себя
+    fetch-registry: false        # и не ищет другие
+  server:
+    wait-time-in-ms-when-sync-empty: 0

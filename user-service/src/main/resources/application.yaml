@@ -3,7 +3,3 @@ spring:
     name: user-service
   profiles:
     active: dev
-
-
-server:
-  port: 8081

@@ -25,9 +25,11 @@
     </developers>
 
     <modules>
+        <module>api-gateway</module>
         <module>user-service</module>
         <module>grpc-common</module>
         <module>auth-service</module>
+        <module>eureka-server</module>
     </modules>
 
     <properties>
@@ -54,6 +56,9 @@
         <spring-boot-starter-test.version>3.4.4</spring-boot-starter-test.version>
         <spring-boot-starter-security.version>3.4.4</spring-boot-starter-security.version>
         <spring-security-core.version>6.4.4</spring-security-core.version>
+        <spring-cloud-starter-gateway.version>4.2.2</spring-cloud-starter-gateway.version>
+        <spring-cloud-starter-netflix-eureka-client.version>4.2.1</spring-cloud-starter-netflix-eureka-client.version>
+        <spring-cloud-starter-netflix-eureka-server.version>4.2.1</spring-cloud-starter-netflix-eureka-server.version>
     </properties>
 
     <dependencyManagement>
@@ -203,10 +208,28 @@
             <!--                    GATEWAY                    -->
 
 
+            <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-gateway -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-gateway-mvc</artifactId>
+                <artifactId>spring-cloud-starter-gateway</artifactId>
+                <version>${spring-cloud-starter-gateway.version}</version>
             </dependency>
+
+
+            <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-client -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+                <version>${spring-cloud-starter-netflix-eureka-client.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-server -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+                <version>${spring-cloud-starter-netflix-eureka-server.version}</version>
+            </dependency>
+
 
 
             <!--                    UTILS                    -->

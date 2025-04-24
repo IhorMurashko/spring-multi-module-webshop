@@ -3,7 +3,6 @@ package com.multimodule.webshop.controllers;
 import com.multimodule.webshop.dtos.AuthCredentialsDto;
 import com.multimodule.webshop.dtos.TokensDto;
 import com.multimodule.webshop.grpcAuthServices.GrpcAuthService;
-import com.multimodule.webshop.proto.common.AuthCredentials;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +33,4 @@ public class AuthController {
 
         return ResponseEntity.ok(tokensDto);
     }
-
-
 }
