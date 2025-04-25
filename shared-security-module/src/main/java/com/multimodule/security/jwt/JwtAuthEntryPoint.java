@@ -1,4 +1,4 @@
-package com.multimodule.webshop.jwt;
+package com.multimodule.security.jwt;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +32,9 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
                          AuthenticationException authException)
             throws IOException, ServletException {
         log.error(authException.getMessage(), authException);
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+
+        response.setContentType("application/json");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().write("{\"error\": \"Unauthorized\"}");
     }
 }

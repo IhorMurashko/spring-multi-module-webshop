@@ -1,4 +1,4 @@
-package com.multimodule.webshop.jwt;
+package com.multimodule.security.jwt;
 
 
 import io.jsonwebtoken.Claims;

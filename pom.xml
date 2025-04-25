@@ -30,6 +30,7 @@
         <module>grpc-common</module>
         <module>auth-service</module>
         <module>eureka-server</module>
+        <module>shared-security-module</module>
     </modules>
 
     <properties>
@@ -53,12 +54,14 @@
         <spring-boot-starter-mail.version>3.4.4</spring-boot-starter-mail.version>
         <spring-boot-starter-validation.version>3.4.4</spring-boot-starter-validation.version>
         <spring-boot-starter-web.version>3.4.4</spring-boot-starter-web.version>
+        <jakarta.servlet-api.version>6.1.0</jakarta.servlet-api.version>
         <spring-boot-starter-test.version>3.4.4</spring-boot-starter-test.version>
         <spring-boot-starter-security.version>3.4.4</spring-boot-starter-security.version>
         <spring-security-core.version>6.4.4</spring-security-core.version>
         <spring-cloud-starter-gateway.version>4.2.2</spring-cloud-starter-gateway.version>
         <spring-cloud-starter-netflix-eureka-client.version>4.2.1</spring-cloud-starter-netflix-eureka-client.version>
         <spring-cloud-starter-netflix-eureka-server.version>4.2.1</spring-cloud-starter-netflix-eureka-server.version>
+
     </properties>
 
     <dependencyManagement>
@@ -113,6 +116,15 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-actuator</artifactId>
                 <version>${spring-boot-starter-actuator.version}</version>
+            </dependency>
+
+
+            <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
+            <dependency>
+                <groupId>jakarta.servlet</groupId>
+                <artifactId>jakarta.servlet-api</artifactId>
+                <version>${jakarta.servlet-api.version}</version>
+                <scope>provided</scope>
             </dependency>
 
             <!--                    DB MIGRATION                    -->

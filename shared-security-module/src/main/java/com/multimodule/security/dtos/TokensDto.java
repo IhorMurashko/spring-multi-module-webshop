@@ -1,8 +1,7 @@
-package com.multimodule.webshop.dtos;
+package com.multimodule.security.dtos;
 
 public record TokensDto(
-        String refreshToken,
-        String accessToken
-
+        String accessToken,
+        String refreshToken
 ) {
 }

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+
+    <parent>
+        <groupId>com.multimoduls.webshop</groupId>
+        <artifactId>webshop-multimoduls</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>shared-security-module</artifactId>
+    <packaging>jar</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>webshop-multimoduls</name>
+
+
+
+
+    <dependencies>
+        <!--                    SECURITY                    -->
+
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+        </dependency>
+
+        <!-- JWT зависимости (версия 0.12.6) -->
+
+        <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!--                    UTILS                    -->
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+
+        <!--                    WEB                    -->
+        <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+
+    </dependencies>
+
+
+</project>

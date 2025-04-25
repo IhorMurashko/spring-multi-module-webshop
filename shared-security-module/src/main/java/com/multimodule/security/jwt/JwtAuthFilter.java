@@ -1,4 +1,4 @@
-package com.multimodule.webshop.jwt;
+package com.multimodule.security.jwt;
 
 
 import com.multimodule.webshop.redisServices.RevokedTokenServiceImpl;
@@ -27,7 +27,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider tokenProvider;
     private final UserDetailsService userDetailsService;
-    private final RevokedTokenServiceImpl revokedTokenServiceImpl;
+    private final RevokedTokenService revokedTokenService;
 
     /**
      * Same contract as for {@code doFilter}, but guaranteed to be
@@ -48,7 +48,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             final String token = extractToken(request);
 
             if (token != null && tokenProvider.validateToken(token)) {
-                if (revokedTokenServiceImpl.isTokenRevoked(token)) {
+                if (revokedTokenService.isTokenRevoked(token)) {
                     throw new JwtException("Token has been revoked");
                 }
                 String tokenType = tokenProvider.extractClaimFromToken(token, claims ->
@@ -81,7 +81,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         final String requestToken = request.getHeader("Authorization");
 
         if (requestToken == null) {
-            log.warn("There is no Authorization header");
+            log.warn("No token in request to {} {}", request.getMethod(), request.getRequestURI());
             return null;
         }
         if (!requestToken.startsWith("Bearer ")) {
