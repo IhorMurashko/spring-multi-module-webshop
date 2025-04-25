@@ -11,9 +11,10 @@
     </parent>
 
     <artifactId>shared-security-module</artifactId>
-    <packaging>jar</packaging>
     <version>0.0.1-SNAPSHOT</version>
-    <name>webshop-multimoduls</name>
+    <name>shared-security-module</name>
+    <description>Shared security module for JWT auth and token validation</description>
+    <packaging>jar</packaging>
 
 
 
@@ -70,6 +71,5 @@
 
 
     </dependencies>
-
 
 </project>

@@ -1,5 +1,6 @@
 package com.multimodule.security.jwt;
 
+import com.multimodule.security.utils.CustomExceptionsMessage;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -35,6 +36,6 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
 
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write("{\"error\": \"Unauthorized\"}");
+        response.getWriter().write(CustomExceptionsMessage.UNAUTHORIZED_EXCEPTION_MESSAGE);
     }
 }

@@ -1,7 +1,7 @@
 package com.multimodule.security.jwt;
 
 
-import com.multimodule.webshop.redisServices.RevokedTokenServiceImpl;
+import com.multimodule.security.revokedTokensService.RevokedTokenService;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,8 +19,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-
-@Component
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthFilter extends OncePerRequestFilter {

@@ -1,6 +1,7 @@
 package com.multimodule.security.jwt;
 
 
+import com.multimodule.security.utils.CustomExceptionsMessage;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,6 +11,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.temporal.ChronoUnit;
 
 @Component
 @Slf4j
@@ -26,6 +28,10 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         log.error(accessDeniedException.getMessage(), accessDeniedException);
-        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden");
+
+        response.setContentType("application/json");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().write(CustomExceptionsMessage.ACCESS_DENIED_EXCEPTION_MESSAGE);
+
     }
 }
