@@ -1,7 +1,9 @@
-package com.multimodule.webshop.jwt;
+package com.multimodule.security.jwt;
 
 
-import com.multimodule.webshop.dtos.TokensDto;
+import com.multimodule.security.dtos.TokensDto;
+import com.multimodule.security.exceptions.RefreshingTokenIsInvalidException;
+import com.multimodule.security.utils.CustomExceptionsMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,31 +16,59 @@ import org.springframework.stereotype.Service;
 public class JwtTokenManager {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final UserDetailsService userDetailsService;
 
-    public TokensDto manageTokens(TokensDto tokens) {
+    public TokensDto manageTokens(TokensDto tokens, UserDetailsService userDetailsService) {
+
         final String refreshToken = tokens.refreshToken();
 
         String newAccessToken;
         String newRefreshToken = null;
 
         if (jwtTokenProvider.validateToken(refreshToken)) {
-            String username = jwtTokenProvider.getUsernameFromToken(refreshToken);
-            UserDetails user = userDetailsService.loadUserByUsername(username);
-            newAccessToken = jwtTokenProvider.generateAccessToken(user);
 
-            if (jwtTokenProvider.isRefreshTokenExpiredSoon(refreshToken)) {
-                newRefreshToken = jwtTokenProvider.generateRefreshToken(user);
+            newAccessToken = generateNewAccessToken(refreshToken, userDetailsService);
+
+            if (checkIfNeedNewRefresh(refreshToken)) {
+                newRefreshToken = generateNewRefreshToken(refreshToken, userDetailsService);
             }
+
+            return new TokensDto(newAccessToken,
+                    newRefreshToken != null
+                            ? newRefreshToken
+                            : tokens.refreshToken()
+            );
         } else {
-            throw new IllegalArgumentException("Invalid refresh token");
+            log.error("Refresh token is invalid for user: {} ",
+                    jwtTokenProvider.getUsernameFromToken(refreshToken));
+
+            throw new RefreshingTokenIsInvalidException(
+                    CustomExceptionsMessage.REFRESHING_TOKEN_IS_INVALID_EXCEPTION_MESSAGE);
         }
 
-        return new TokensDto(newAccessToken,
-                newRefreshToken != null
-                        ? newRefreshToken
-                        : tokens.refreshToken()
-        );
+
+    }
+
+    private String generateNewAccessToken(String refreshToken, UserDetailsService userDetailsService) {
+
+
+        String usernameFromToken = jwtTokenProvider.getUsernameFromToken(refreshToken);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(usernameFromToken);
+
+        return jwtTokenProvider.generateAccessToken(userDetails);
+
+
+    }
+
+    private boolean checkIfNeedNewRefresh(String refreshToken) {
+        return jwtTokenProvider.isRefreshTokenExpiredSoon(refreshToken);
+    }
+
+    private String generateNewRefreshToken(String refreshToken, UserDetailsService userDetailsService) {
+
+        String usernameFromToken = jwtTokenProvider.getUsernameFromToken(refreshToken);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(usernameFromToken);
+        return jwtTokenProvider.generateRefreshToken(userDetails);
+
     }
 
 
