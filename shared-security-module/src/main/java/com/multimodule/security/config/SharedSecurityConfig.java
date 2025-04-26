@@ -5,7 +5,7 @@ import com.multimodule.security.jwt.JwtTokenProvider;
 import com.multimodule.security.revokedTokensService.RevokedTokenService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface SecurityConfig {
+public interface SharedSecurityConfig {
 
 
     default JwtAuthFilter jwtAuthFilter(JwtTokenProvider jwtTokenProvider,

@@ -3,6 +3,8 @@ package com.multimodule.security.jwt;
 
 import com.multimodule.security.dtos.TokensDto;
 import com.multimodule.security.exceptions.RefreshingTokenIsInvalidException;
+import com.multimodule.security.exceptions.UserDetailsInstanceOfException;
+import com.multimodule.security.userDetails.JwtPrincipal;
 import com.multimodule.security.utils.CustomExceptionsMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,10 +28,15 @@ public class JwtTokenManager {
 
         if (jwtTokenProvider.validateToken(refreshToken)) {
 
-            newAccessToken = generateNewAccessToken(refreshToken, userDetailsService);
+            String username = jwtTokenProvider.getUsernameFromToken(refreshToken);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+            JwtPrincipal jwtPrincipal = fromUserDetails(userDetails);
+
+            newAccessToken = delegateGenerateNewAccessToken(jwtPrincipal);
 
             if (checkIfNeedNewRefresh(refreshToken)) {
-                newRefreshToken = generateNewRefreshToken(refreshToken, userDetailsService);
+                newRefreshToken = delegateGenerateNewRefreshToken(jwtPrincipal);
             }
 
             return new TokensDto(newAccessToken,
@@ -48,28 +55,23 @@ public class JwtTokenManager {
 
     }
 
-    private String generateNewAccessToken(String refreshToken, UserDetailsService userDetailsService) {
-
-
-        String usernameFromToken = jwtTokenProvider.getUsernameFromToken(refreshToken);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(usernameFromToken);
-
+    private String delegateGenerateNewAccessToken(JwtPrincipal userDetails) {
         return jwtTokenProvider.generateAccessToken(userDetails);
-
-
     }
 
     private boolean checkIfNeedNewRefresh(String refreshToken) {
         return jwtTokenProvider.isRefreshTokenExpiredSoon(refreshToken);
     }
 
-    private String generateNewRefreshToken(String refreshToken, UserDetailsService userDetailsService) {
-
-        String usernameFromToken = jwtTokenProvider.getUsernameFromToken(refreshToken);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(usernameFromToken);
+    private String delegateGenerateNewRefreshToken(JwtPrincipal userDetails) {
         return jwtTokenProvider.generateRefreshToken(userDetails);
-
     }
 
+    public static JwtPrincipal fromUserDetails(UserDetails userDetails) {
+        if (userDetails instanceof JwtPrincipal jwtPrincipal) {
+            return jwtPrincipal;
+        }
+        throw new UserDetailsInstanceOfException("UserDetails must implement JwtPrincipal");
+    }
 
 }
