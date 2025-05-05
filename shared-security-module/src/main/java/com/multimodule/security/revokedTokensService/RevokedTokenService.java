@@ -1,6 +1,6 @@
 package com.multimodule.security.revokedTokensService;
 
-import com.multimodule.security.dtos.TokensDto;
+import com.multimodule.security.dtos.token.TokensDto;
 
 public interface RevokedTokenService {
 

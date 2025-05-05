@@ -2,10 +2,10 @@ package com.multimodule.security.jwt;
 
 
 import com.multimodule.security.constants.SecurityConstants;
-import com.multimodule.security.exceptions.RefreshingTokenIsInvalidException;
-import com.multimodule.security.exceptions.RevokedTokenException;
+import com.multimodule.security.exceptions.CustomExceptionsMessage;
+import com.multimodule.security.exceptions.tokenExceptions.RefreshingTokenIsInvalidException;
+import com.multimodule.security.exceptions.tokenExceptions.RevokedTokenException;
 import com.multimodule.security.revokedTokensService.RevokedTokenService;
-import com.multimodule.security.utils.CustomExceptionsMessage;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -25,7 +24,6 @@ import java.util.List;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider tokenProvider;
-    private final UserDetailsService userDetailsService;
     private final RevokedTokenService revokedTokenService;
 
     /**
@@ -58,7 +56,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
                 if (SecurityConstants.REFRESH_TOKEN_TYPE.equals(tokenType)) {
                     log.error("Refresh token is not supported");
-                    throw new RefreshingTokenIsInvalidException(CustomExceptionsMessage.REFRESHING_TOKEN_CANT_BE_USED_FOR_AUTHENTICATION_EXCEPTION_MESSAGE);
+                    throw new RefreshingTokenIsInvalidException(CustomExceptionsMessage
+                            .REFRESHING_TOKEN_CANT_BE_USED_FOR_AUTHENTICATION_EXCEPTION_MESSAGE);
                 }
 
                 String userId = tokenProvider.extractClaimFromToken(token, claims ->
@@ -66,11 +65,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 String username = tokenProvider.getUsernameFromToken(token);
                 List<String> roles = tokenProvider.getRolesFromToken(token);
 
-                response.setHeader(SecurityConstants.HEADER_USER_ID, userId);
-                response.setHeader(SecurityConstants.HEADER_USERNAME, username);
-                response.setHeader(SecurityConstants.HEADER_ROLES, String.join(",", roles));
 
-                log.info("Authenticated user {}, setting headers", username);
+                request.setAttribute(SecurityConstants.USER_ID_CLAIM, userId);
+                request.setAttribute(SecurityConstants.USERNAME_CLAIM, username);
+                request.setAttribute(SecurityConstants.ROLES_CLAIM, String.join(",", roles));
+
+                log.info("Authenticated user {}", username);
             }
 
 
@@ -80,46 +80,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-
-//    @Override
-//    protected void doFilterInternal(@NonNull HttpServletRequest request,
-//                                    @NonNull HttpServletResponse response,
-//                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
-//        try {
-//            final String token = extractToken(request);
-//
-//            if (token != null && tokenProvider.validateToken(token)) {
-//                if (revokedTokenService.isTokenRevoked(token)) {
-//                    log.warn("Token is invalid or revoked: {}", token);
-//                    throw new RevokedTokenException(CustomExceptionsMessage
-//                            .TOKEN_HAS_BEEN_REVOKED_EXCEPTION_MESSAGE);
-//                }
-//                String tokenType = tokenProvider.extractClaimFromToken(token, claims ->
-//                        claims.get(SecurityConstants.TOKEN_TYPE_CLAIM, String.class));
-//                if (tokenType != null && tokenType.equals(SecurityConstants.REFRESH_TOKEN_TYPE)) {
-//                    throw new RefreshingTokenIsInvalidException(CustomExceptionsMessage
-//                            .REFRESHING_TOKEN_CANT_BE_USED_FOR_AUTHENTICATION_EXCEPTION_MESSAGE);
-//                }
-//
-//                final String username = tokenProvider.getUsernameFromToken(token);
-//                UserDetails user = userDetailsService.loadUserByUsername(username);
-//
-//                if (user != null) {
-//                    UsernamePasswordAuthenticationToken authentication =
-//                            new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-//                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-//                    log.info("Set authentication in context holder for {}", user.getUsername());
-//                    SecurityContextHolder.getContext().setAuthentication(authentication);
-//                }
-//            }
-//        } catch (JwtException e) {
-//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
-//                    CustomExceptionsMessage.UNAUTHORIZED_EXCEPTION_MESSAGE);
-//            log.error("JwtAuthFilter: JwtException {}", e.getMessage());
-//            return;
-//        }
-//        filterChain.doFilter(request, response);
-//    }
 
 
     private String extractToken(HttpServletRequest request) {

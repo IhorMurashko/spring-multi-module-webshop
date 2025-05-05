@@ -34,6 +34,7 @@ public class JwtTokenProvider {
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .claim(SecurityConstants.USER_ID_CLAIM, userDetails.getUserId())
+                .claim(SecurityConstants.USERNAME_CLAIM, userDetails.getUsername())
                 .claim(SecurityConstants.TOKEN_TYPE_CLAIM, SecurityConstants.REFRESH_TOKEN_TYPE)
                 .signWith(key)
                 .compact();
@@ -54,6 +55,7 @@ public class JwtTokenProvider {
                 .issuedAt(now)
                 .expiration(expirationDate)
                 .claim(SecurityConstants.USER_ID_CLAIM, userDetails.getUserId())
+                .claim(SecurityConstants.USERNAME_CLAIM, userDetails.getUsername())
                 .claim(SecurityConstants.TOKEN_TYPE_CLAIM, SecurityConstants.ACCESS_TOKEN_TYPE)
                 .claim(SecurityConstants.ROLES_CLAIM, roles)
                 .signWith(key)

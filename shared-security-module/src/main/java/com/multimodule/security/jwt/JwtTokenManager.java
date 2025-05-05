@@ -1,11 +1,11 @@
 package com.multimodule.security.jwt;
 
 
-import com.multimodule.security.dtos.TokensDto;
-import com.multimodule.security.exceptions.RefreshingTokenIsInvalidException;
+import com.multimodule.security.dtos.token.TokensDto;
+import com.multimodule.security.exceptions.tokenExceptions.RefreshingTokenIsInvalidException;
 import com.multimodule.security.exceptions.UserDetailsInstanceOfException;
 import com.multimodule.security.userDetails.JwtPrincipal;
-import com.multimodule.security.utils.CustomExceptionsMessage;
+import com.multimodule.security.exceptions.CustomExceptionsMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

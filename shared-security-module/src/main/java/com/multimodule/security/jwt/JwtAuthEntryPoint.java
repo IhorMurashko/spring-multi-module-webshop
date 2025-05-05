@@ -1,6 +1,6 @@
 package com.multimodule.security.jwt;
 
-import com.multimodule.security.utils.CustomExceptionsMessage;
+import com.multimodule.security.exceptions.CustomExceptionsMessage;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

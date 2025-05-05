@@ -101,6 +101,4 @@ public record CustomUserDetails(
     public boolean isEnabled() {
         return this.isEnabled;
     }
-
-
 }

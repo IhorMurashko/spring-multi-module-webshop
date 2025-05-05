@@ -1,4 +1,4 @@
-package com.multimodule.security.utils;
+package com.multimodule.security.exceptions;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
