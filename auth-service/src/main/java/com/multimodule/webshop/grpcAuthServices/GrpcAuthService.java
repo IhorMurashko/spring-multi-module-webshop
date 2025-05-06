@@ -1,7 +1,7 @@
 package com.multimodule.webshop.grpcAuthServices;
 
+import com.multimodule.security.dtos.token.TokensDto;
 import com.multimodule.webshop.dtos.AuthCredentialsDto;
-import com.multimodule.webshop.dtos.TokensDto;
 
 public interface GrpcAuthService {
 

@@ -2,18 +2,16 @@ package com.multimodule.webshop.grpcAuthServices;
 
 import auth.AuthServiceGrpc;
 import auth.Result;
+import com.multimodule.security.dtos.token.TokensDto;
+import com.multimodule.security.jwt.JwtTokenProvider;
+import com.multimodule.security.userDetails.CustomUserDetails;
 import com.multimodule.webshop.dtos.AuthCredentialsDto;
-import com.multimodule.webshop.dtos.TokensDto;
-import com.multimodule.webshop.dtos.UserDto;
-import com.multimodule.webshop.jwt.JwtTokenProvider;
-import com.multimodule.webshop.mapper.UserMapper;
+import com.multimodule.webshop.mapper.UserToCustomUserDetailsDtoMapper;
 import com.multimodule.webshop.proto.common.AuthCredentials;
 import com.multimodule.webshop.proto.common.User;
-import com.multimodule.webshop.userDetails.CustomUserDetails;
 import io.grpc.StatusRuntimeException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,7 +20,8 @@ import org.springframework.stereotype.Service;
 public class GrpcAuthServiceImpl implements GrpcAuthService {
 
     private final AuthServiceGrpc.AuthServiceBlockingStub authServiceBlockingStub;
-    private final UserMapper userMapper;
+    private final UserToCustomUserDetailsDtoMapper userToCustomUserDetailsDtoMapper;
+    //todo :add scanPackage for security common library
     private final JwtTokenProvider jwtTokenProvider;
 
 
@@ -49,9 +48,8 @@ public class GrpcAuthServiceImpl implements GrpcAuthService {
                     .setPassword(credentials.password())
                     .build());
 
-            UserDto userDto = userMapper.toDto(authentication);
 
-            UserDetails userDetails = new CustomUserDetails(userDto);
+            CustomUserDetails userDetails = userToCustomUserDetailsDtoMapper.toDto(authentication);
 
             final String accessToken = jwtTokenProvider.generateAccessToken(userDetails);
             final String refreshToken = jwtTokenProvider.generateRefreshToken(userDetails);
