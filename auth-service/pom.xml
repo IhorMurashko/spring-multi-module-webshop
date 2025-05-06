@@ -8,6 +8,7 @@
         <groupId>com.multimoduls.webshop</groupId>
         <artifactId>webshop-multimoduls</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>pom.xml</relativePath>
     </parent>
 
     <artifactId>auth-service</artifactId>
@@ -24,17 +25,16 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <dependencies>
-
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-test</artifactId>
+                </dependency>
             </dependencies>
         </profile>
         <profile>
             <id>test</id>
             <dependencies>
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-test</artifactId>
-                    <scope>test</scope>
-                </dependency>
+
             </dependencies>
         </profile>
         <profile>
@@ -71,28 +71,9 @@
 
         <!--                    SECURITY                    -->
 
-
-        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-
-        <!-- JWT зависимости (версия 0.12.6) -->
-        <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-impl</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-jackson</artifactId>
-            <scope>runtime</scope>
+            <groupId>com.multimoduls.webshop</groupId>
+            <artifactId>shared-security-module</artifactId>
         </dependency>
 
 
@@ -102,7 +83,6 @@
             <groupId>com.multimoduls.webshop</groupId>
             <artifactId>grpc-common</artifactId>
         </dependency>
-
 
 
         <!--                    UTILS                    -->
