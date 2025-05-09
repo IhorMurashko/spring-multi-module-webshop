@@ -1,4 +1,4 @@
-package com.multimodule.security.dtos.user;
+package com.multimodule.security.dto.user;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -8,6 +8,5 @@ public record AuthenticatedUserDto(
         String userId,
         String username,
         Set<GrantedAuthority> roles
-
 ) {
 }

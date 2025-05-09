@@ -1,13 +1,16 @@
-package com.multimodule.security.jwt;
-
+package com.multimodule.security.jwt.tokenManagement.provider;
 
 import com.multimodule.security.constants.SecurityConstants;
+import com.multimodule.security.exceptions.ExceptionsConstantsMessage;
+import com.multimodule.security.exceptions.tokenExceptions.RefreshingTokenIsInvalidException;
+import com.multimodule.security.utils.DateObserver;
 import com.multimodule.security.userDetails.JwtPrincipal;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
@@ -17,17 +20,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
 
-@Component
 @Slf4j
-public class JwtTokenProvider {
+public class DefaultJwtTokenProvider implements BasicJwtTokenProvider {
     //todo:  generate new stateful secret key;
     private final SecretKey key = Jwts.SIG.HS256.key().build();
 
-    public String generateRefreshToken(JwtPrincipal userDetails) {
+    @Override
+    public String generateRefreshToken(JwtPrincipal userDetails, long validityPeriodInSeconds) {
+
         Date now = new Date();
-        // Refresh token validity period: 30 days
-        long refreshTokenExpirationMs = 2592000000L;
-        Date expiryDate = new Date(now.getTime() + refreshTokenExpirationMs);
+        Date expiryDate = DateObserver.dateExpirationGenerator(now, validityPeriodInSeconds);
 
         return Jwts.builder()
                 .subject(userDetails.getUsername())
@@ -40,11 +42,13 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String generateAccessToken(JwtPrincipal userDetails) {
+    @Override
+    public String generateAccessToken(JwtPrincipal userDetails, long validityPeriodInSeconds) {
+
         Date now = new Date();
-        // Access token validity period: 15 minutes
-        long accessTokenExpirationMs = 900_000;
-        Date expirationDate = new Date(now.getTime() + accessTokenExpirationMs);
+        Date expirationDate = DateObserver.dateExpirationGenerator(now, validityPeriodInSeconds);
+
+
         List<String> roles = userDetails.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
@@ -62,6 +66,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    @Override
     public boolean validateToken(String token) {
         if (token == null || token.isEmpty()) {
             return false;
@@ -75,6 +80,7 @@ public class JwtTokenProvider {
         }
     }
 
+    @Override
     public String getUsernameFromToken(String token) {
         return Jwts.parser().verifyWith(key).build()
                 .parseSignedClaims(token)
@@ -82,6 +88,7 @@ public class JwtTokenProvider {
                 .getSubject();
     }
 
+    @Override
     public List<String> getRolesFromToken(String token) {
         return extractClaimFromToken(token, claims -> {
             Object rolesObject = claims.get(SecurityConstants.ROLES_CLAIM);
@@ -95,27 +102,37 @@ public class JwtTokenProvider {
         });
     }
 
+    @Override
+    public boolean isTokenExpiredSoon(String refreshToken, long expectedExpirationTimeMs) {
+        if (!SecurityConstants.REFRESH_TOKEN_TYPE.equals(refreshToken)) {
+            throw new RefreshingTokenIsInvalidException(
+                    ExceptionsConstantsMessage
+                            .ACCESS_TOKEN_CANT_BE_USED_FOR_GETTING_NEW_REFRESH_TOKEN_EXCEPTION_MESSAGE
+            );
+        }
 
-    public boolean isRefreshTokenExpiredSoon(String refreshToken) {
         Date expirationDate = extractClaimFromToken(refreshToken, Claims::getExpiration);
         if (expirationDate == null) {
             return true;
         }
         long remainingMillis = expirationDate.getTime() - System.currentTimeMillis();
-        long oneDayInMillis = 86400000L; // 24 hours
-        return remainingMillis < oneDayInMillis;
+
+        return remainingMillis < expectedExpirationTimeMs;
     }
 
+    @Override
     public <T> T extractClaimFromToken(String token, Function<Claims, T> function) {
-        Claims claims = null;
         try {
-            claims = Jwts.parser()
+            Claims claims = Jwts.parser()
                     .verifyWith(key).build()
                     .parseSignedClaims(token)
                     .getPayload();
+            return function.apply(claims);
         } catch (MalformedJwtException ex) {
-            log.error("Invalid JWT token", ex);
+            log.error("Invalid JWT token {}", ex.getMessage());
+            throw ex;
         }
-        return function.apply(claims);
     }
+
+
 }

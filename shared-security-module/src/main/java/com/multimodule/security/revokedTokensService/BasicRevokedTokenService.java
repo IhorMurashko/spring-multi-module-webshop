@@ -1,8 +1,8 @@
 package com.multimodule.security.revokedTokensService;
 
-import com.multimodule.security.dtos.token.TokensDto;
+import com.multimodule.security.dto.token.TokensDto;
 
-public interface RevokedTokenService {
+public interface BasicRevokedTokenService {
 
     /**
      * Revokes the provided tokens by storing them in Redis with a TTL equal to their remaining lifetime.

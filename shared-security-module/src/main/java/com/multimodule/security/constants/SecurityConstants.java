@@ -15,7 +15,7 @@ public final class SecurityConstants {
     public static final String TOKEN_ID_CLAIM = "tokenId";
 
     // === CLAIMS ===
-    public static final String USER_ID_CLAIM = "userId";
+    public static final String USER_ID_CLAIM = "id";
     public static final String USERNAME_CLAIM = "username";
     public static final String ROLES_CLAIM = "roles";
 

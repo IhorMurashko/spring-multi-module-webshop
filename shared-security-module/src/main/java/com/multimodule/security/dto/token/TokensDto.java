@@ -1,4 +1,4 @@
-package com.multimodule.security.dtos.token;
+package com.multimodule.security.dto.token;
 
 /**
  * Data Transfer Object (DTO) representing a pair of JWT tokens.

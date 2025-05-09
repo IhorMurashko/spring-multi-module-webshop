@@ -1,8 +1,8 @@
 package com.multimodule.webshop.security;
 
-import com.multimodule.security.interalFilter.InternalRequestFilter;
-import com.multimodule.security.jwt.JwtAccessDeniedHandler;
-import com.multimodule.security.jwt.JwtAuthEntryPoint;
+import com.multimodule.securityOld.interalFilter.InternalRequestFilter;
+import com.multimodule.security.jwt.access.JwtAccessDeniedHandler;
+import com.multimodule.security.jwt.access.JwtAuthEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableMethodSecurity
 @RequiredArgsConstructor
-@ComponentScan(basePackages = "com.multimodule.security")
+@ComponentScan(basePackages = "com.multimodule.securityOld")
 public class SecurityConfig {
 
     private final JwtAuthEntryPoint jwtAuthEntryPoint;

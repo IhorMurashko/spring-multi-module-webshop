@@ -2,7 +2,6 @@ package com.multimodule.security.context;
 
 import com.multimodule.security.constants.SecurityConstants;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 

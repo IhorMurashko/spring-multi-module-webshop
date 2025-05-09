@@ -1,16 +1,18 @@
-package com.multimodule.security.jwt;
+package com.multimodule.security.jwt.access;
 
-import com.multimodule.security.exceptions.CustomExceptionsMessage;
+import com.multimodule.security.exceptions.ExceptionsConstantsMessage;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@ConditionalOnMissingBean
 @Component
 @Slf4j
 public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
@@ -36,6 +38,6 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
 
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write(CustomExceptionsMessage.UNAUTHORIZED_EXCEPTION_MESSAGE);
+        response.getWriter().write(ExceptionsConstantsMessage.UNAUTHORIZED_EXCEPTION_MESSAGE);
     }
 }

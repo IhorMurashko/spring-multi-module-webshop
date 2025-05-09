@@ -2,9 +2,9 @@ package com.multimodule.webshop.grpcAuthServices;
 
 import auth.AuthServiceGrpc;
 import auth.Result;
-import com.multimodule.security.dtos.token.TokensDto;
-import com.multimodule.security.jwt.JwtTokenProvider;
-import com.multimodule.security.userDetails.CustomUserDetails;
+import com.multimodule.security.dto.token.TokensDto;
+import com.multimodule.security.jwt.tokenManagement.provider.DefaultJwtTokenProvider;
+import com.multimodule.security.userDetails.JwtUserPrincipal;
 import com.multimodule.webshop.dtos.AuthCredentialsDto;
 import com.multimodule.webshop.mapper.UserToCustomUserDetailsDtoMapper;
 import com.multimodule.webshop.proto.common.AuthCredentials;
@@ -22,7 +22,7 @@ public class GrpcAuthServiceImpl implements GrpcAuthService {
     private final AuthServiceGrpc.AuthServiceBlockingStub authServiceBlockingStub;
     private final UserToCustomUserDetailsDtoMapper userToCustomUserDetailsDtoMapper;
     //todo :add scanPackage for security common library
-    private final JwtTokenProvider jwtTokenProvider;
+    private final DefaultJwtTokenProvider defaultJwtTokenProvider;
 
 
     @Override
@@ -49,10 +49,10 @@ public class GrpcAuthServiceImpl implements GrpcAuthService {
                     .build());
 
 
-            CustomUserDetails userDetails = userToCustomUserDetailsDtoMapper.toDto(authentication);
+            JwtUserPrincipal userDetails = userToCustomUserDetailsDtoMapper.toDto(authentication);
 
-            final String accessToken = jwtTokenProvider.generateAccessToken(userDetails);
-            final String refreshToken = jwtTokenProvider.generateRefreshToken(userDetails);
+            final String accessToken = defaultJwtTokenProvider.generateAccessToken(userDetails);
+            final String refreshToken = defaultJwtTokenProvider.generateRefreshToken(userDetails);
 
             return new TokensDto(accessToken, refreshToken);
 

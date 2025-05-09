@@ -1,11 +1,12 @@
-package com.multimodule.security.jwt;
+package com.multimodule.security.jwt.access;
 
 
-import com.multimodule.security.exceptions.CustomExceptionsMessage;
+import com.multimodule.security.exceptions.ExceptionsConstantsMessage;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
+@ConditionalOnMissingBean
 @Slf4j
 public class JwtAccessDeniedHandler implements AccessDeniedHandler {
     /**
@@ -30,7 +32,7 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write(CustomExceptionsMessage.ACCESS_DENIED_EXCEPTION_MESSAGE);
+        response.getWriter().write(ExceptionsConstantsMessage.ACCESS_DENIED_EXCEPTION_MESSAGE);
 
     }
 }

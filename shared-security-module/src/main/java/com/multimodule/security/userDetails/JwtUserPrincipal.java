@@ -7,10 +7,10 @@ import java.util.Collection;
 import java.util.List;
 
 @Builder
-public record CustomUserDetails(
+public record JwtUserPrincipal(
 
-        Long userId,
-        List<GrantedAuthority> authorities,
+        Long id,
+        List<GrantedAuthority> roles,
         String password,
         String username,
         boolean isAccountNonExpired,
@@ -22,17 +22,17 @@ public record CustomUserDetails(
 
     @Override
     public Long getUserId() {
-        return this.userId;
+        return this.id;
     }
 
     /**
-     * Returns the authorities granted to the user. Cannot return <code>null</code>.
+     * Returns the roles granted to the user. Cannot return <code>null</code>.
      *
-     * @return the authorities, sorted by natural key (never <code>null</code>)
+     * @return the roles, sorted by natural key (never <code>null</code>)
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
+        return this.roles;
     }
 
     /**

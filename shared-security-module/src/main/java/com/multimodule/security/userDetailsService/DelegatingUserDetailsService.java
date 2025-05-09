@@ -1,17 +1,16 @@
 package com.multimodule.security.userDetailsService;
 
-import com.multimodule.security.userDetails.CustomUserDetails;
+import com.multimodule.security.userDetails.JwtUserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-@Service
 @RequiredArgsConstructor
 public class DelegatingUserDetailsService implements UserDetailsService {
 
-    private final TypedUserDetailsService<CustomUserDetails> delegate;
+    private final TypedUserDetailsService<JwtUserPrincipal> delegate;
 
     /**
      * Locates the user based on the username. In the actual implementation, the search

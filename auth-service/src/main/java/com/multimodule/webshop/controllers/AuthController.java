@@ -1,6 +1,6 @@
 package com.multimodule.webshop.controllers;
 
-import com.multimodule.security.dtos.token.TokensDto;
+import com.multimodule.security.dto.token.TokensDto;
 import com.multimodule.webshop.dtos.AuthCredentialsDto;
 import com.multimodule.webshop.grpcAuthServices.GrpcAuthService;
 import lombok.RequiredArgsConstructor;
