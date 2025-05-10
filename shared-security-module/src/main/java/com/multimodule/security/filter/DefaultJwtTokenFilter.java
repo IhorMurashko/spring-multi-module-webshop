@@ -1,7 +1,7 @@
 package com.multimodule.security.filter;
 
 import com.multimodule.security.constants.SecurityConstants;
-import com.multimodule.security.exceptions.ExceptionsConstantsMessage;
+import com.multimodule.security.exceptions.ExceptionConstantMessage;
 import com.multimodule.security.exceptions.tokenExceptions.RefreshingTokenIsInvalidException;
 import com.multimodule.security.exceptions.tokenExceptions.RevokedTokenException;
 import com.multimodule.security.jwt.tokenManagement.provider.BasicJwtTokenProvider;
@@ -62,7 +62,7 @@ public class DefaultJwtTokenFilter extends BasicOnePerRequestFilter {
 
                 if (basicRevokedTokenService.isTokenRevoked(token)) {
                     log.warn("Token is invalid or revoked: {}", token);
-                    throw new RevokedTokenException(ExceptionsConstantsMessage.TOKEN_HAS_BEEN_REVOKED_EXCEPTION_MESSAGE);
+                    throw new RevokedTokenException(ExceptionConstantMessage.TOKEN_HAS_BEEN_REVOKED_EXCEPTION_MESSAGE);
                 }
 
                 Map<String, Object> userClaims = tokenProvider.extractClaimFromToken(token, claims ->
@@ -77,7 +77,7 @@ public class DefaultJwtTokenFilter extends BasicOnePerRequestFilter {
 
                 if (userClaims.get(SecurityConstants.TOKEN_TYPE_CLAIM).equals(SecurityConstants.REFRESH_TOKEN_TYPE)) {
                     log.error("Refresh token is not supported");
-                    throw new RefreshingTokenIsInvalidException(ExceptionsConstantsMessage
+                    throw new RefreshingTokenIsInvalidException(ExceptionConstantMessage
                             .REFRESHING_TOKEN_CANT_BE_USED_FOR_AUTHENTICATION_EXCEPTION_MESSAGE);
                 }
 

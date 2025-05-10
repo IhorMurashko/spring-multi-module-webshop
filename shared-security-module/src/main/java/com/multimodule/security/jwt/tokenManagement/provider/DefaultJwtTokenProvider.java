@@ -1,7 +1,7 @@
 package com.multimodule.security.jwt.tokenManagement.provider;
 
 import com.multimodule.security.constants.SecurityConstants;
-import com.multimodule.security.exceptions.ExceptionsConstantsMessage;
+import com.multimodule.security.exceptions.ExceptionConstantMessage;
 import com.multimodule.security.exceptions.tokenExceptions.RefreshingTokenIsInvalidException;
 import com.multimodule.security.utils.DateObserver;
 import com.multimodule.security.userDetails.JwtPrincipal;
@@ -10,9 +10,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Collections;
@@ -106,7 +104,7 @@ public class DefaultJwtTokenProvider implements BasicJwtTokenProvider {
     public boolean isTokenExpiredSoon(String refreshToken, long expectedExpirationTimeMs) {
         if (!SecurityConstants.REFRESH_TOKEN_TYPE.equals(refreshToken)) {
             throw new RefreshingTokenIsInvalidException(
-                    ExceptionsConstantsMessage
+                    ExceptionConstantMessage
                             .ACCESS_TOKEN_CANT_BE_USED_FOR_GETTING_NEW_REFRESH_TOKEN_EXCEPTION_MESSAGE
             );
         }

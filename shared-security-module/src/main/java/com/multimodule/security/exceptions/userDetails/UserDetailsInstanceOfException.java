@@ -1,4 +1,4 @@
-package com.multimodule.security.exceptions;
+package com.multimodule.security.exceptions.userDetails;
 
 public class UserDetailsInstanceOfException extends RuntimeException {
     public UserDetailsInstanceOfException(String message) {

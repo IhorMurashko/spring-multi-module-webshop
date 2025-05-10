@@ -20,6 +20,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -49,8 +50,11 @@ public class BeanConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    public DefaultJwtTokenManager defaultJwtTokenManager(BasicJwtTokenProvider jwtTokenProvider) {
-        return new DefaultJwtTokenManager(jwtTokenProvider);
+    @ConditionalOnClass(TypedUserDetailsService.class)
+    @ConditionalOnBean(TypedUserDetailsService.class)
+    public DefaultJwtTokenManager defaultJwtTokenManager(BasicJwtTokenProvider jwtTokenProvider,
+                                                         TypedUserDetailsService<? extends UserDetailsService> typedUserDetailsService) {
+        return new DefaultJwtTokenManager(jwtTokenProvider, typedUserDetailsService);
     }
 
     @Bean

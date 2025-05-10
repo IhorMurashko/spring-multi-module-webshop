@@ -1,35 +1,35 @@
 package com.multimodule.security.jwt.tokenManagement.managment;
 
 
-import com.multimodule.security.exceptions.ExceptionsConstantsMessage;
-import com.multimodule.security.exceptions.UserDetailsInstanceOfException;
-import com.multimodule.security.exceptions.tokenExceptions.RefreshingTokenIsInvalidException;
-import com.multimodule.security.jwt.tokenManagement.provider.BasicJwtTokenProvider;
 import com.multimodule.security.dto.token.TokensDto;
+import com.multimodule.security.exceptions.ExceptionConstantMessage;
+import com.multimodule.security.exceptions.tokenExceptions.RefreshingTokenIsInvalidException;
+import com.multimodule.security.exceptions.userDetails.UserDetailsInstanceOfException;
+import com.multimodule.security.jwt.tokenManagement.provider.BasicJwtTokenProvider;
 import com.multimodule.security.userDetails.JwtPrincipal;
+import com.multimodule.security.userDetailsService.TypedUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Slf4j
 public class DefaultJwtTokenManager implements BasicTokenManager {
 
-    private final BasicJwtTokenProvider defaultJwtTokenProvider;
+    private final BasicJwtTokenProvider jwtTokenProvider;
+    private final TypedUserDetailsService<? extends UserDetailsService> userDetailsService;
 
-    public TokensDto refreshToken(TokensDto tokens, UserDetailsService userDetailsService) {
+    public TokensDto refreshToken(TokensDto tokens) {
 
         final String refreshToken = tokens.refreshToken();
 
         String newAccessToken;
         String newRefreshToken = null;
 
-        if (defaultJwtTokenProvider.validateToken(refreshToken)) {
+        if (jwtTokenProvider.validateToken(refreshToken)) {
 
-            String username = defaultJwtTokenProvider.getUsernameFromToken(refreshToken);
+            String username = jwtTokenProvider.getUsernameFromToken(refreshToken);
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
             JwtPrincipal jwtPrincipal = fromUserDetails(userDetails);
@@ -47,26 +47,28 @@ public class DefaultJwtTokenManager implements BasicTokenManager {
             );
         } else {
             log.error("Refresh token is invalid for user: {} ",
-                    defaultJwtTokenProvider.getUsernameFromToken(refreshToken));
+                    jwtTokenProvider.getUsernameFromToken(refreshToken));
 
             throw new RefreshingTokenIsInvalidException(
-                    ExceptionsConstantsMessage.REFRESHING_TOKEN_IS_INVALID_EXCEPTION_MESSAGE);
+                    ExceptionConstantMessage.REFRESHING_TOKEN_IS_INVALID_EXCEPTION_MESSAGE);
         }
 
 
     }
 
     private String delegateGenerateNewAccessToken(JwtPrincipal userDetails) {
-        return defaultJwtTokenProvider.generateAccessToken(userDetails, 900_000L);
+        //15 minutes
+        return jwtTokenProvider.generateAccessToken(userDetails, 900_000L);
     }
 
     private boolean checkIfNeedNewRefreshToken(String refreshToken) {
         //24 hours
-        return defaultJwtTokenProvider.isTokenExpiredSoon(refreshToken, 86400000L);
+        return jwtTokenProvider.isTokenExpiredSoon(refreshToken, 86400000L);
     }
 
     private String delegateGenerateNewRefreshToken(JwtPrincipal userDetails) {
-        return defaultJwtTokenProvider.generateRefreshToken(userDetails, 2592000000L);
+        //30 days
+        return jwtTokenProvider.generateRefreshToken(userDetails, 2592000000L);
     }
 
     public static JwtPrincipal fromUserDetails(UserDetails userDetails) {

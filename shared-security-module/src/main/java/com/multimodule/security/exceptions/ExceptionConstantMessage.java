@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ExceptionsConstantsMessage {
+public class ExceptionConstantMessage {
 
     public final static String REFRESHING_TOKEN_IS_INVALID_EXCEPTION_MESSAGE = "Refreshing token is invalid";
     public final static String REFRESHING_TOKEN_CANT_BE_USED_FOR_AUTHENTICATION_EXCEPTION_MESSAGE = "Refreshing token can't be used for authentication";

@@ -5,6 +5,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface BasicTokenManager {
 
-    TokensDto refreshToken(TokensDto tokensDto, UserDetailsService userDetailsService);
+    TokensDto refreshToken(TokensDto tokensDto);
 
 }

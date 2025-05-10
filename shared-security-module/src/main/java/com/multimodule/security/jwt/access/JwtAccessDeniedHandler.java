@@ -1,7 +1,7 @@
 package com.multimodule.security.jwt.access;
 
 
-import com.multimodule.security.exceptions.ExceptionsConstantsMessage;
+import com.multimodule.security.exceptions.ExceptionConstantMessage;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,7 +32,7 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write(ExceptionsConstantsMessage.ACCESS_DENIED_EXCEPTION_MESSAGE);
+        response.getWriter().write(ExceptionConstantMessage.ACCESS_DENIED_EXCEPTION_MESSAGE);
 
     }
 }

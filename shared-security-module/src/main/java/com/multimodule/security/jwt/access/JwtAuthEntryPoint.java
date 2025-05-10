@@ -1,6 +1,6 @@
 package com.multimodule.security.jwt.access;
 
-import com.multimodule.security.exceptions.ExceptionsConstantsMessage;
+import com.multimodule.security.exceptions.ExceptionConstantMessage;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -38,6 +38,6 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
 
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write(ExceptionsConstantsMessage.UNAUTHORIZED_EXCEPTION_MESSAGE);
+        response.getWriter().write(ExceptionConstantMessage.UNAUTHORIZED_EXCEPTION_MESSAGE);
     }
 }
