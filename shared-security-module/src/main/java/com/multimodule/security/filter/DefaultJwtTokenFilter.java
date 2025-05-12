@@ -56,6 +56,13 @@ public class DefaultJwtTokenFilter extends BasicOnePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         try {
+
+            String uriPath = request.getRequestURI();
+            if (uriPath.equals("/api/v1/auth/refresh-token")) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
             final String token = extractToken(request);
 
             if (token != null && tokenProvider.validateToken(token)) {

@@ -2,6 +2,8 @@ package com.multimodule.security.config;
 
 import com.multimodule.security.filter.DefaultInternalRequestFilter;
 import com.multimodule.security.filter.DefaultJwtTokenFilter;
+import com.multimodule.security.jwt.access.JwtAccessDeniedHandler;
+import com.multimodule.security.jwt.access.JwtAuthEntryPoint;
 import com.multimodule.security.jwt.tokenManagement.managment.DefaultJwtTokenManager;
 import com.multimodule.security.jwt.tokenManagement.provider.BasicJwtTokenProvider;
 import com.multimodule.security.jwt.tokenManagement.provider.DefaultJwtTokenProvider;
@@ -100,6 +102,18 @@ public class BeanConfig {
     public DefaultGrpcRevokedTokenService defaultGrpcRevokedTokenService(DelegationGrpcRevokedTokenService delegationGrpcRevokedTokenService) {
 
         return new DefaultGrpcRevokedTokenService(delegationGrpcRevokedTokenService);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public JwtAccessDeniedHandler jwtAccessDeniedHandler() {
+        return new JwtAccessDeniedHandler();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public JwtAuthEntryPoint jwtAuthEntryPoint() {
+        return new JwtAuthEntryPoint();
     }
 
 
